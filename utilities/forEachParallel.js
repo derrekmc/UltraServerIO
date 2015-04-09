@@ -1,0 +1,71 @@
+//var forEach = require("./forEachNext")
+function asyncParallel(iterator, done, limit, spreadAffinityOneToTen) {
+    var list = this.A
+    if(typeof(iterator) != 'function' || iterator === null) {
+        console.error("No iterator passed");
+        if(done){
+            done("No iterator passed");
+        }
+        return;
+    }
+
+    var completeCalled = false;
+    var parallelLimit = limit || 20;
+    var limit = 0;
+    var parallelFor = [];
+
+    if(!spreadAffinityOneToTen){
+        var spread = Math.random() * spreadAffinityOneToTen+1; //Used to prevent a continuous IO block from a strenuous parallel for loop
+    }else{
+        var spread = 0;
+    }
+
+    function complete(){
+        if(completeCalled) return;
+
+        completeCalled = true;
+        clearInterval(forLoop);
+
+        // This should be an IO block since we are killing all processes and do not want to process one more item.
+        parallelFor.forEach(function(element){
+            clearInterval(element);
+        });
+        
+        /*
+        var _args = arguments;
+        // This should be an IO block since we are killing all processes and do not want to process one more item.
+        forEach(parallelFor, function(element, next){
+            clearInterval(element);
+            next();
+        }, function(err, results){
+            parallelFor = [];
+            delete(parallelFor);
+            delete(limit);
+            if(done){
+                done.apply(done, _args);
+            }
+        });
+        */
+
+        parallelFor = [];
+        delete(parallelFor);
+        delete(limit);
+
+         if(done){
+            done.apply(done, arguments);
+        }
+    }
+
+    var forLoop = setInterval(function(){
+        if(limit < parallelLimit){
+            limit++;
+            parallelFor.push(setInterval(function(){
+                iterator(complete);
+            }, spread));
+        }
+    }, spread);
+
+}
+
+module.exports = asyncParallel;
+
