@@ -31,22 +31,6 @@ function asyncParallel(iterator, done, limit, spreadAffinityOneToTen) {
             clearInterval(element);
         });
         
-        /*
-        var _args = arguments;
-        // This should be an IO block since we are killing all processes and do not want to process one more item.
-        forEach(parallelFor, function(element, next){
-            clearInterval(element);
-            next();
-        }, function(err, results){
-            parallelFor = [];
-            delete(parallelFor);
-            delete(limit);
-            if(done){
-                done.apply(done, _args);
-            }
-        });
-        */
-
         parallelFor = [];
         delete(parallelFor);
         delete(limit);
