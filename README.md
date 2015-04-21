@@ -3,9 +3,9 @@ A set of fast, high concurrency non blocking IO utilities that will handle any l
 
 Looping that is completely non blocking and can easily do 10 million loops
 
-##Check out npm test for more examples / details
+Check out npm test for more examples / details
 
-### forEachNext is the forEach statement that doesnt continue until you tell it too
+forEachNext is the forEach statement that doesnt continue until you tell it too
 
 ```
 var ultraIO = require('UltraServerIO');
